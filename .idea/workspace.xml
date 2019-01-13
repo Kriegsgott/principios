@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="86b9cc49-046c-410c-8817-fadd6256d72e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/modulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/modulation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/receiver.py" beforeDir="false" afterPath="$PROJECT_DIR$/receiver.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/transmitter.py" beforeDir="false" afterPath="$PROJECT_DIR$/transmitter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/transmitter_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/transmitter_test.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,11 +16,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/receiver.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1979">
-              <caret line="133" lean-forward="true" selection-start-line="133" selection-end-line="133" />
+            <state relative-caret-position="452">
+              <caret line="276" column="27" selection-start-line="276" selection-start-column="27" selection-end-line="276" selection-end-column="27" />
               <folding>
                 <element signature="e#111#141#0" expanded="true" />
               </folding>
@@ -38,11 +35,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/transmitter_test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="418">
-              <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
+            <state relative-caret-position="714">
+              <caret line="42" lean-forward="true" selection-start-line="42" selection-end-line="42" />
               <folding>
                 <element signature="e#77#122#0" expanded="true" />
               </folding>
@@ -104,9 +101,9 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/modulation.py" />
-        <option value="$PROJECT_DIR$/receiver.py" />
         <option value="$PROJECT_DIR$/transmitter.py" />
         <option value="$PROJECT_DIR$/transmitter_test.py" />
+        <option value="$PROJECT_DIR$/receiver.py" />
       </list>
     </option>
   </component>
@@ -219,15 +216,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1547340946582</updated>
-      <workItem from="1547340948784" duration="1875000" />
+      <workItem from="1547340948784" duration="2133000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1875000" />
+    <option name="totallyTimeSpent" value="2133000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
@@ -267,11 +264,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/process_word.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-177" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/modulation.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="113">
@@ -299,22 +291,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/receiver.py">
+    <entry file="file://$PROJECT_DIR$/transmitter_test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1979">
-          <caret line="133" lean-forward="true" selection-start-line="133" selection-end-line="133" />
+        <state relative-caret-position="714">
+          <caret line="42" lean-forward="true" selection-start-line="42" selection-end-line="42" />
           <folding>
-            <element signature="e#111#141#0" expanded="true" />
+            <element signature="e#77#122#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/transmitter_test.py">
+    <entry file="file://$PROJECT_DIR$/process_word.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
+        <state relative-caret-position="-177" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/receiver.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="452">
+          <caret line="276" column="27" selection-start-line="276" selection-start-column="27" selection-end-line="276" selection-end-column="27" />
           <folding>
-            <element signature="e#77#122#0" expanded="true" />
+            <element signature="e#111#141#0" expanded="true" />
           </folding>
         </state>
       </provider>
