@@ -5,8 +5,8 @@ Contains the functions to modulate and demodulate with 16QAM
 @author: Hojin
 """
 
-from Tools.audio_play import *
-from Tools.process_word import *
+from audio_play import *
+from process_word import *
 import numpy as np
 from scipy import signal
 import matplotlib.pyplot as plt

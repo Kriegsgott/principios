@@ -5,11 +5,11 @@ Has the functions needed in the receivew to decode the signal
 @author: Hojin
 """
 
-from Tools.modulation import *
-from Tools.process_image import *
-from Tools.audio_play import *
-from Tools.process_word import *
-
+from modulation import *
+from process_image import *
+from audio_play import *
+from process_word import *
+from scipy.fftpack import fft
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -263,3 +263,15 @@ def detect_change(signal, start, skip=1000):
             break
         
     return i
+
+
+def display_fft(signal, fs):
+    N = np.size(signal)
+    # sample spacing
+    T = 1.0 / fs
+    x = np.linspace(0.0, N * T, N)
+    yf = fft(signal)
+    xf = np.linspace(0.0, 1.0 / (2.0 * T), N // 2)
+    plt.plot(xf, 2.0 / N * np.abs(yf[0:N // 2]))
+    plt.grid()
+    plt.show()

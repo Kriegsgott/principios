@@ -5,11 +5,11 @@ Functions needed to transmit the message
 @author: Hojin
 """
 
-from Tools.modulation import *
-from Tools.process_image import *
-from Tools.audio_play import *
-from Tools.process_word import *
-
+from modulation import *
+from process_image import *
+from audio_play import *
+from process_word import *
+from scipy.fftpack import fft
 import numpy as np
 
 def generate_signal(word, image_path, f_word, f_R, f_G, f_B, fs, periods,

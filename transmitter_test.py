@@ -5,9 +5,11 @@ Test the transmitter module
 @author: Hojin
 """
 
-from Tools.transmitter import generate_signal
-from Tools.audio_play import playAudio
-from Tools.receiver import decode_signal
+from transmitter import generate_signal
+from audio_play import playAudio
+from receiver import decode_signal
+from receiver import display_fft
+from scipy.fftpack import fft
 
 import scipy.io.wavfile as wav
 import numpy as np
@@ -33,7 +35,7 @@ signal = generate_signal(word, image_path, f_word, f_R, f_G, f_B, fs, periods,
                     inter_repetition_periods=1)
 
 signal = np.append(np.zeros(800), signal)
-
+display_fft(signal, fs)
 scaled = np.int16(signal/np.max(np.abs(signal)) * 32767)
 wav.write('test.wav', 44100, scaled)
 
