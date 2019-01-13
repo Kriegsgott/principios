@@ -11,6 +11,9 @@ import numpy as np
 from scipy import signal
 import matplotlib.pyplot as plt
 
+from display import display_fft
+
+
 def qam16(bitwise_representation, f, fs, periods=20):
     """
     Does the 16QAM modulation
@@ -35,21 +38,21 @@ def qam16(bitwise_representation, f, fs, periods=20):
 
         I_components = np.append(I_components, np.ones(int(periods))*I_component)
         Q_components = np.append(Q_components, np.ones(int(periods))*Q_component)
-        
+
     # Parametros del Butterworth
-    fc = 1300
+    fc = 700
     w = fc / (fs / 2)
     order = 5
-        
+
     # Filter the signal
     b, a = signal.butter(order, w, 'low')
     I_components = signal.filtfilt(b, a, I_components)
     Q_components = signal.filtfilt(b, a, Q_components)
-        
+
     # Add the wave to the list
-    waves = (I_component*generateWave(f, fs, Ts*np.size(I_components), 1) +
-                 Q_component*generateWave(f, fs, Ts*np.size(Q_components), 0))
-    
+    waves = (I_components*generateWave(f, fs, Ts*np.size(I_components), val=1) -
+                 Q_components*generateWave(f, fs, Ts*np.size(Q_components), val=0))
+
     return waves
     
 
@@ -62,23 +65,27 @@ def qam16_demodulate(waves, f, fs):
     :param fs:      Sampling frequency
     :return:        A tuple containing the I and Q components
     """
-    cosine_wave = generateWave(f, fs, np.size(waves)/fs, 1)
-    sine_wave = generateWave(f, fs, np.size(waves)/fs, 0)
+    cosine_wave = generateWave(f, fs, np.size(waves)/fs, val=1)[:np.size(waves)]
+    sine_wave = generateWave(f, fs, np.size(waves)/fs, val=0)[:np.size(waves)]
     
     # Componentes I y Q
     I_component = 2*waves*cosine_wave
     Q_component = 2*waves*sine_wave
-    
+
     # Parametros del Butterworth
-    fc = 1300
+    fc = 700
     w = fc / (fs / 2)
     order = 5
-    
+
     # Filter the signal
     b, a = signal.butter(order, w, 'low')
     I_component = signal.filtfilt(b, a, I_component)
     Q_component = signal.filtfilt(b, a, Q_component)
-    
+
+    plt.clf()
+    plt.plot(I_component[:12000])
+    plt.show()
+
     return (I_component, Q_component)
 
 
@@ -109,7 +116,8 @@ def get_values(component, samples):
         value += samples
     
     return values
-    
+
+
 def approximate(value):
     """
     Approximates the I or Q component
@@ -242,7 +250,7 @@ def synchronizer_signal(periods):
     # Append numbers to the list
     for i in range(periods):
         
-        # 14 = 00001111
+        # 15 = 00001111
         numbers.append(15)
         
     return group_fours(numbers)

@@ -73,21 +73,21 @@ def generate_signal(word, image_path, f_word, f_R, f_G, f_B, fs, periods,
             qam16(synchronizer_signal(sync_repetitions), f_R, fs, periods) +
             qam16(synchronizer_signal(sync_repetitions), f_G, fs, periods) +
             qam16(synchronizer_signal(sync_repetitions), f_B, fs, periods))
-    
+
     # Wave for estimation
     estimator = (qam16(estimator_signal(estimation_repetitions), f_word, fs, periods) +
                  qam16(estimator_signal(estimation_repetitions), f_R, fs, periods) +
                  qam16(estimator_signal(estimation_repetitions), f_G, fs, periods) +
                  qam16(estimator_signal(estimation_repetitions), f_B, fs, periods))
-    
+
     # Wave for waiting
     waiting = np.zeros(int(np.size(estimator)*estimation_repetitions/
                            (inter_repetition_periods + 1e-6)))
-    
+
     # Generate final wave
     final_wave = np.append(sync, estimator)
-    
+
     for i in range(repetitions):
         final_wave = np.append(final_wave, wave)
-    
+
     return final_wave

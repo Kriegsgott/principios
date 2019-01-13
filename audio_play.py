@@ -9,20 +9,21 @@ Contains the functions needed to generate a wave and play it
 import pyaudio
 import numpy as np
 
-def generateWave(f, fs, duration, val = 0):
+
+def generateWave(f, fs, duration, val=0):
     """
     Generates a wave with frequency f.
     
     :param f:           Frequency of the wave
-    :param fs:          Sampling frequncy
+    :param fs:          Sampling frequency
     :param duration:    Duration of the wave
     :param val:         Generates sine wave if 0, cos wave if 1
     :return:            The sampled wave
     """
     if val == 0:
-        samples = (np.sin(2*np.pi*np.arange(fs*duration)*f/fs)).astype(np.float32)
+        samples = (np.sin(2*np.pi*np.arange(fs*duration)*f/fs))
     else:
-        samples = (np.cos(2*np.pi*np.arange(fs*duration)*f/fs)).astype(np.float32)
+        samples = (np.cos(2*np.pi*np.arange(fs*duration)*f/fs))
 
     return samples
 

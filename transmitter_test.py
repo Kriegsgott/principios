@@ -6,28 +6,25 @@ Test the transmitter module
 """
 
 from transmitter import generate_signal
-from audio_play import playAudio
 from receiver import decode_signal
-from receiver import display_fft
-from scipy.fftpack import fft
+from display import display_fft
 
 import scipy.io.wavfile as wav
 import numpy as np
-import matplotlib.pyplot as plt
 
 # Word and image
 word = "¡Examen, Principio de Comunicaciones Primavera 2018 EL4005!"
 image_path = "pollito_14x14.png"
 
 # Frequencies used
-f_word = 1000
+f_word = 3000
 f_R = 5000
-f_G = 9000
-f_B = 13000
+f_G = 7000
+f_B = 9000
 fs = 40000
 
 # Periods per bit
-periods = 200
+periods = 1600
 
 # Generate signal
 signal = generate_signal(word, image_path, f_word, f_R, f_G, f_B, fs, periods,
@@ -35,8 +32,8 @@ signal = generate_signal(word, image_path, f_word, f_R, f_G, f_B, fs, periods,
                     inter_repetition_periods=1)
 
 signal = np.append(np.zeros(800), signal)
-display_fft(signal, fs)
 scaled = np.int16(signal/np.max(np.abs(signal)) * 32767)
+display_fft(scaled, fs)
 wav.write('test.wav', 44100, scaled)
 
 word = decode_signal(scaled, f_word, f_R, f_G, f_B, fs)

@@ -9,9 +9,9 @@ from modulation import *
 from process_image import *
 from audio_play import *
 from process_word import *
-from scipy.fftpack import fft
 import numpy as np
 import matplotlib.pyplot as plt
+
 
 def decode_signal(signal, f_word, f_R, f_G, f_B, fs, repetitions=3,
                   sync_repetitions=3, estimation_repetitions=3,
@@ -48,15 +48,13 @@ def decode_signal(signal, f_word, f_R, f_G, f_B, fs, repetitions=3,
     I_word = I_word*4/np.max(I_word)
     Q_word = Q_word*4/np.max(Q_word)
     
-    plt.plot(I_R)
-    
     # Get the periods of the signals
     periods_I, periods_Q, I_start, Q_start = approximate_period(I_R, I_G, I_B, I_word,
                                  Q_R, Q_G, Q_B, Q_word, sync_repetitions)
     
     # Cast the values to ints    
-    periods_I = 200
-    periods_Q = 200
+    periods_I = 1600
+    periods_Q = 1600
     I_start = int(I_start)
     Q_start = int(Q_start)
     
@@ -69,7 +67,7 @@ def decode_signal(signal, f_word, f_R, f_G, f_B, fs, repetitions=3,
                                periods_I, periods_Q,
                                estimation_repetitions)
     
-    I_G, Q_G= estimate_signal(I_G, Q_G, I_start, Q_start,
+    I_G, Q_G = estimate_signal(I_G, Q_G, I_start, Q_start,
                               periods_I, periods_Q,
                               estimation_repetitions)
     
@@ -265,15 +263,3 @@ def detect_change(signal, start, skip=1000):
     return i
 
 
-def display_fft(signal, fs):
-    N = np.size(signal)
-    # sample spacing
-    T = 1.0 / fs
-    x = np.linspace(0.0, N * T, N)
-    yf = fft(signal)
-    xf = np.linspace(0.0, 1.0 / (2.0 * T), N // 2)
-    plt.plot(xf, 2.0 / N * np.abs(yf[0:N // 2]))
-    plt.title('FFT señal a transmitir')
-    plt.xlabel('Frecuencia HZ')
-    plt.grid()
-    plt.show()
