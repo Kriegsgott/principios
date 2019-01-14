@@ -24,7 +24,7 @@ f_B = 9000
 fs = 40000
 
 # Periods per bit
-periods = 1600
+periods = 2000
 
 # Generate signal
 signal = generate_signal(word, image_path, f_word, f_R, f_G, f_B, fs, periods,

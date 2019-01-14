@@ -7,8 +7,8 @@ Has the functions needed in the receivew to decode the signal
 
 from modulation import *
 from process_image import *
-from audio_play import *
 from process_word import *
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -51,13 +51,17 @@ def decode_signal(signal, f_word, f_R, f_G, f_B, fs, repetitions=3,
     # Get the periods of the signals
     periods_I, periods_Q, I_start, Q_start = approximate_period(I_R, I_G, I_B, I_word,
                                  Q_R, Q_G, Q_B, Q_word, sync_repetitions)
-    
+
     # Cast the values to ints    
-    periods_I = 1600
-    periods_Q = 1600
+    periods_I = 2000
+    periods_Q = 2000
     I_start = int(I_start)
     Q_start = int(Q_start)
-    
+
+    plt.clf()
+    plt.plot(I_R[500000:580000], Q_R[500000:580000], '.')
+    plt.show()
+
     # Estimate the values of the signal
     I_word, Q_word = estimate_signal(I_word, Q_word, I_start, Q_start,
                                       periods_I, periods_Q,
@@ -74,7 +78,7 @@ def decode_signal(signal, f_word, f_R, f_G, f_B, fs, repetitions=3,
     I_B, Q_B = estimate_signal(I_B, Q_B, I_start, Q_start,
                                periods_I, periods_Q,
                                estimation_repetitions)
-    
+
     # Get the real values
     I_R_Real = get_values(I_R, periods_I)
     Q_R_Real = get_values(Q_R, periods_Q)
@@ -84,7 +88,7 @@ def decode_signal(signal, f_word, f_R, f_G, f_B, fs, repetitions=3,
     Q_B_Real = get_values(Q_B, periods_Q)
     I_word_Real = get_values(I_word, periods_I)
     Q_word_Real = get_values(Q_word, periods_Q)
-    
+
     # Generate the image
     values_R = decode_components(I_R_Real, Q_R_Real)
     values_G = decode_components(I_G_Real, Q_G_Real)
@@ -106,7 +110,7 @@ def decode_signal(signal, f_word, f_R, f_G, f_B, fs, repetitions=3,
     G_3 = G_channel[int(2*np.size(G_channel)/3):]
     B_3 = B_channel[int(2*np.size(B_channel)/3):]
     
-    # Choose by mayority in each bit
+    # Choose by majority in each bit
     R_channel = (R_1|R_2) & (R_2|R_3) & (R_1|R_3)
     G_channel = (G_1|G_2) & (G_2|G_3) & (G_1|G_3)
     B_channel = (B_1|B_2) & (B_2|B_3) & (B_1|B_3)
@@ -122,7 +126,7 @@ def decode_signal(signal, f_word, f_R, f_G, f_B, fs, repetitions=3,
     values_2 = values[int(np.size(values)/3):int(2*np.size(values)/3)]
     values_3 = values[int(2*np.size(values)/3):]
     
-    # Choose by mayority by bit
+    # Choose by majority by bit
     values = (values_1|values_2) & (values_2|values_3) & (values_1|values_3)
     word = generate_original_word(group_eights(values))
     
@@ -161,7 +165,7 @@ def estimate_signal(I, Q, I_start, Q_start, periods_I, periods_Q,
         
         I = I*expected/I_val
         Q = Q*expected/Q_val
-        
+
         I_start += periods_I
         Q_start += periods_Q
 
@@ -198,7 +202,10 @@ def approximate_period(I_R, I_G, I_B, I_word, Q_R, Q_G, Q_B,
     
     Q_start = np.mean(np.array([detect_start(Q_R), detect_start(Q_G),
                       detect_start(Q_B), detect_start(Q_word)]))
-    
+
+    print(I_start)
+    print(Q_start)
+
     I_change_points = []
     Q_change_points = []
 
@@ -221,7 +228,7 @@ def approximate_period(I_R, I_G, I_B, I_word, Q_R, Q_G, Q_B,
         # Update the starting points
         I_start = I_change
         Q_start = Q_change
-    
+
     return (np.mean(np.array(I_change_points)),
             np.mean(np.array(Q_change_points)),
             I_start, Q_start)    
@@ -230,7 +237,7 @@ def approximate_period(I_R, I_G, I_B, I_word, Q_R, Q_G, Q_B,
 def detect_start(signal, noise_samples=1000, samples=1000, threshold=5e-3):
     """
     Detects the start of the transmission
-    
+
     :param signal:          The received signal
     :param noise_samples:   The minimum samples of noise
     :param samples:         The samples to take when estimating the start
@@ -240,7 +247,7 @@ def detect_start(signal, noise_samples=1000, samples=1000, threshold=5e-3):
     # If the mean of 100 samples if over the threshold
     for i in range(noise_samples, np.size(signal)):
         if (signal[i]*signal[i+1] < 0 and all(j > 0 for j in signal[i+1:i+samples])
-            and float(np.diff(signal[i:i+2])) > threshold):
+                and float(np.diff(signal[i:i+2])) > threshold):
             break
 
     return i

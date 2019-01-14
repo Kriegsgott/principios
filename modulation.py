@@ -6,12 +6,9 @@ Contains the functions to modulate and demodulate with 16QAM
 """
 
 from audio_play import *
-from process_word import *
-import numpy as np
 from scipy import signal
-import matplotlib.pyplot as plt
 
-from display import display_fft
+import numpy as np
 
 
 def qam16(bitwise_representation, f, fs, periods=20):
@@ -34,7 +31,6 @@ def qam16(bitwise_representation, f, fs, periods=20):
         # I and Q components of the wave
         I_component = coding_values(int(number & mask) - 2)
         Q_component = coding_values(int((number >> 2) & mask) - 2)
-        Ts = 1/fs
 
         I_components = np.append(I_components, np.ones(int(periods))*I_component)
         Q_components = np.append(Q_components, np.ones(int(periods))*Q_component)
@@ -50,8 +46,8 @@ def qam16(bitwise_representation, f, fs, periods=20):
     Q_components = signal.filtfilt(b, a, Q_components)
 
     # Add the wave to the list
-    waves = (I_components*generateWave(f, fs, Ts*np.size(I_components), val=1) -
-                 Q_components*generateWave(f, fs, Ts*np.size(Q_components), val=0))
+    waves = (I_components*generateWave(f, fs, np.size(I_components), val=1) -
+                 Q_components*generateWave(f, fs, np.size(Q_components), val=0))
 
     return waves
     
@@ -65,12 +61,12 @@ def qam16_demodulate(waves, f, fs):
     :param fs:      Sampling frequency
     :return:        A tuple containing the I and Q components
     """
-    cosine_wave = generateWave(f, fs, np.size(waves)/fs, val=1)[:np.size(waves)]
-    sine_wave = generateWave(f, fs, np.size(waves)/fs, val=0)[:np.size(waves)]
+    cosine_wave = generateWave(f, fs, np.size(waves), val=1)
+    sine_wave = generateWave(f, fs, np.size(waves), val=0)
     
     # Componentes I y Q
     I_component = 2*waves*cosine_wave
-    Q_component = 2*waves*sine_wave
+    Q_component = -2*waves*sine_wave
 
     # Parametros del Butterworth
     fc = 700
@@ -82,17 +78,13 @@ def qam16_demodulate(waves, f, fs):
     I_component = signal.filtfilt(b, a, I_component)
     Q_component = signal.filtfilt(b, a, Q_component)
 
-    plt.clf()
-    plt.plot(I_component[:12000])
-    plt.show()
-
     return (I_component, Q_component)
 
 
 def get_values(component, samples):
     """
     Get the values of the I and Q component.
-    
+
     :param component:   The numpy array of either component
     :param samples:     The number of samples in each component
     :return:            A list with the components actual values
@@ -266,10 +258,11 @@ def estimator_signal(periods):
     
     numbers = []
     
-    # append numbers to the list
+    # Append numbers to the list
     for i in range(periods):
         # 15 = 00001111
         numbers.append(15)
+
         # 165 = 10100101
         numbers.append(165)
         

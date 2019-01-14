@@ -21,9 +21,9 @@ def generateWave(f, fs, duration, val=0):
     :return:            The sampled wave
     """
     if val == 0:
-        samples = (np.sin(2*np.pi*np.arange(fs*duration)*f/fs))
+        samples = (np.sin(2*np.pi*np.arange(duration)*f/fs))
     else:
-        samples = (np.cos(2*np.pi*np.arange(fs*duration)*f/fs))
+        samples = (np.cos(2*np.pi*np.arange(duration)*f/fs))
 
     return samples
 

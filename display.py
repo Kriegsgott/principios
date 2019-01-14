@@ -1,6 +1,7 @@
 import numpy as np
-from scipy.fftpack import fft
 import matplotlib.pyplot as plt
+
+from scipy.fftpack import fft
 
 
 def display_fft(signal, fs):
