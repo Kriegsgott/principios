@@ -151,7 +151,7 @@ def reverse(component):
     :return:            The component with the reverse operation done
     """
     
-    component = component*2/3 if abs(component == 3) else component
+    component = component*2/3 if abs(component) == 3 else component
     component = component - 1 if component > 0 else component
     component += 2
     
@@ -191,7 +191,7 @@ def group_eights(numbers):
     # Loop over the numbers
     for i in range(int(len(numbers)/2)):
         # Get the original 8 bit value
-        values.append(numbers[2*i] | (numbers[2*i + 1] << 4))
+        values.append(np.uint8(numbers[2*i] | (numbers[2*i + 1] << 4)))
 
     return values
 
@@ -205,7 +205,7 @@ def decode_components(I, Q):
     :return:    A list with the values from the I and Q components
     """
     
-    # Values obatined from I and Q components
+    # Values obtained from I and Q components
     values = []
     
     # Loop over the I and Q components
@@ -213,9 +213,12 @@ def decode_components(I, Q):
         # Else get the original value
         I_component = reverse(I[i])
         Q_component = reverse(Q[i])
+
+        print(I_component)
+        print(Q_component)
         
         # Get the original value
-        value = int(I_component) | (int(Q_component) << 2)
+        value = np.uint8(int(I_component) | (int(Q_component) << 2))
         values.append(value)
         
     return values

@@ -115,7 +115,7 @@ def decode_signal(signal, f_word, f_R, f_G, f_B, fs, repetitions=3,
     image = generate_array_image(R_channel, G_channel, B_channel, 14, 14)
     
     # Generate the word
-    values = np.array(decode_components(I_word_Real, Q_word_Real))
+    values = np.array(group_eights(decode_components(I_word_Real, Q_word_Real)))
     
     # Get the 3 repetitions for the word
     values_1 = values[:int(np.size(values)/3)]
@@ -230,7 +230,7 @@ def approximate_period(I_R, I_G, I_B, I_word, Q_R, Q_G, Q_B,
             I_start, Q_start)    
 
 
-def detect_start(signal, noise_samples=1000, samples=1000, threshold=5e-3):
+def detect_start(signal, noise_samples=100, samples=100, threshold=5e-3):
     """
     Detects the start of the transmission
 

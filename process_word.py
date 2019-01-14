@@ -5,7 +5,6 @@ Contains the functions needed to generates the bits from a word
 @author: Hojin
 """
 
-import numpy as np
 
 def generate_stream(word):
     """
