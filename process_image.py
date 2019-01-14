@@ -8,6 +8,7 @@ Created on Fri Dec 28 02:09:08 2018
 from PIL import Image
 import numpy as np
 
+
 def generate_channels(path):
     """
     Get RGB arrays from image
@@ -35,6 +36,7 @@ def flatten_channel(channel):
     :return:            Flatten array
     """
     return channel.flatten()
+
 
 def generate_array_image(R, G, B, height, width):
     """

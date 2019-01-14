@@ -118,6 +118,7 @@ def approximate(value):
     :return:        The approximated value
     """
 
+
     # If positive it is either 1 or 3
     if value > 0:
         return_value = 1 if abs(value - 1) < abs(value - 3) else 3
@@ -125,7 +126,7 @@ def approximate(value):
     # If negative it is either -1 or -3
     else:
         return_value = -1 if abs(value + 1) < abs(value + 3) else -3
-        
+
     return return_value
 
 
@@ -139,7 +140,8 @@ def coding_values(component):
     # Adjust the I and Q components (we don't want zero and want 2s and 4s)
     component = component + 1 if (component >= 0) else component
     component = component*3/2 if (abs(component) == 2) else component
-    
+    component = int(component)
+
     return component
 
 
@@ -154,7 +156,8 @@ def reverse(component):
     component = component*2/3 if abs(component) == 3 else component
     component = component - 1 if component > 0 else component
     component += 2
-    
+    component = int(component)
+
     return component
 
 
@@ -235,7 +238,7 @@ def synchronizer_signal(periods):
     for i in range(periods):
         
         # 15 = 00001111
-        numbers.append(15)
+        numbers.append(np.uint8(15))
         
     return group_fours(numbers)
 

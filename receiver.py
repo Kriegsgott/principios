@@ -33,6 +33,7 @@ def decode_signal(signal, f_word, f_R, f_G, f_B, fs, repetitions=3,
     # Detect the start of the wave
     start = detect_start(signal)
     signal = signal[start:]
+    print(start)
 
     # Get image components from signal
     I_R, Q_R = qam16_demodulate(signal, f_R, fs)
@@ -56,7 +57,15 @@ def decode_signal(signal, f_word, f_R, f_G, f_B, fs, repetitions=3,
     periods_I, periods_Q, I_start, Q_start = approximate_period(I_R, I_G, I_B, I_word,
                                  Q_R, Q_G, Q_B, Q_word, sync_repetitions)
 
-    # Cast the values to ints    
+    print(I_start)
+    print(Q_start)
+    plt.plot(I_R[12000:56000], 'r')
+    plt.plot(I_B[12000:56000], 'b')
+    plt.plot(I_G[12000:56000], 'g')
+    plt.plot(I_word[12000:56000], '--')
+    plt.show()
+
+    # Cast the values to ints
     periods_I = 2000
     periods_Q = 2000
     I_start = int(I_start)
@@ -79,11 +88,6 @@ def decode_signal(signal, f_word, f_R, f_G, f_B, fs, repetitions=3,
                                periods_I, periods_Q,
                                estimation_repetitions)
 
-    plt.plot(I_R, 'r')
-    plt.plot(I_B, 'b')
-    plt.plot(I_G, 'g')
-    plt.plot(I_word, '--')
-    plt.show()
     # Get the real values
     I_R_Real = get_values(I_R, periods_I)
     Q_R_Real = get_values(Q_R, periods_Q)
@@ -125,16 +129,16 @@ def decode_signal(signal, f_word, f_R, f_G, f_B, fs, repetitions=3,
     
     # Generate the word
     values = np.array(group_eights(decode_components(I_word_Real, Q_word_Real)))
-    
+
     # Get the 3 repetitions for the word
     values_1 = values[:int(np.size(values)/3)]
     values_2 = values[int(np.size(values)/3):int(2*np.size(values)/3)]
     values_3 = values[int(2*np.size(values)/3):]
-    
+
     # Choose by majority by bit
     values = (values_1|values_2) & (values_2|values_3) & (values_1|values_3)
-    word = generate_original_word(group_eights(values))
-    
+    word = generate_original_word(values)
+
     # Print the word and generate the image
     print(word)
     plt.imshow(image)
@@ -162,7 +166,7 @@ def estimate_signal(I, Q, I_start, Q_start, periods_I, periods_Q,
     Q_start = int(Q_start)
     
     # The expected values
-    expected_vals = [4, -4, -2, 2]
+    expected_vals = [3, -3, -1, 1]
     
     for i in range(4*estimation_repetitions):
         I_val = I[I_start]
@@ -234,7 +238,7 @@ def approximate_period(I_R, I_G, I_B, I_word, Q_R, Q_G, Q_B,
             I_start, Q_start)    
 
 
-def detect_start(signal_detect, window_length=10, noise_samples=100, threshold=1):
+def detect_start(signal_detect, window_length=10, noise_samples=100, threshold=10):
     """
     Detects the start of the transmission
 
@@ -250,7 +254,7 @@ def detect_start(signal_detect, window_length=10, noise_samples=100, threshold=1
 
     mean_energy /= noise_samples
     for j in range(noise_samples, len(signal_detect)):
-        if window_energy(signal_detect, j, window_length) > mean_energy + threshold:
+        if window_energy(signal_detect, j, window_length) > mean_energy * threshold:
             break
 
     return j + window_length - 1

@@ -64,7 +64,7 @@ def generate_signal(word, image_path, f_word, f_R, f_G, f_B, fs, periods,
         R_wave[:np.size(R_temp)] = R_temp
         G_wave[:np.size(G_temp)] = G_temp
         B_wave[:np.size(B_temp)] = B_temp
-    
+
     # Wave to transmit
     wave = word_wave + R_wave + G_wave + B_wave
     
