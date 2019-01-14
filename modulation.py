@@ -213,9 +213,6 @@ def decode_components(I, Q):
         # Else get the original value
         I_component = reverse(I[i])
         Q_component = reverse(Q[i])
-
-        print(I_component)
-        print(Q_component)
         
         # Get the original value
         value = np.uint8(int(I_component) | (int(Q_component) << 2))

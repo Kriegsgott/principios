@@ -48,7 +48,7 @@ def generate_signal(word, image_path, f_word, f_R, f_G, f_B, fs, periods,
     B_wave = qam16(B, f_B, fs, periods)
     
     # Pad the shorter one with zeros
-    if(np.size(R_wave) > np.size(word_wave)):
+    if np.size(R_wave) > np.size(word_wave):
         word_wave_temp = word_wave
         word_wave = np.zeros(np.size(R_wave))
         word_wave[:np.size(word_wave_temp)] = word_wave_temp

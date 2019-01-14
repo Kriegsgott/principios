@@ -30,14 +30,18 @@ def decode_signal(signal, f_word, f_R, f_G, f_B, fs, repetitions=3,
     :param estimation_repetitions:      The number of repetitions for the estimation wave
     :param inter_repetitions_periods:   The periods between repetitions
     """
+    # Detect the start of the wave
+    start = detect_start(signal)
+    signal = signal[:start]
+
     # Get image components from signal
     I_R, Q_R = qam16_demodulate(signal, f_R, fs)
     I_G, Q_G = qam16_demodulate(signal, f_G, fs)
     I_B, Q_B = qam16_demodulate(signal, f_B, fs)
-    
+
     # Get text components from signal
     I_word, Q_word = qam16_demodulate(signal, f_word, fs)
-    
+
     # Normalize values by 4
     I_R = I_R*4/np.max(I_R)
     Q_R = Q_R*4/np.max(Q_R)
@@ -193,14 +197,8 @@ def approximate_period(I_R, I_G, I_B, I_word, Q_R, Q_G, Q_B,
     :return:                A tuple containing the periods and the new starting positions
     """
     # Get starting positions for I and Q
-    I_start = np.mean(np.array([detect_start(I_R), detect_start(I_G),
-                      detect_start(I_B), detect_start(I_word)]))
-    
-    Q_start = np.mean(np.array([detect_start(Q_R), detect_start(Q_G),
-                      detect_start(Q_B), detect_start(Q_word)]))
-
-    print(I_start)
-    print(Q_start)
+    I_start = 0
+    Q_start = 0
 
     I_change_points = []
     Q_change_points = []
@@ -230,7 +228,7 @@ def approximate_period(I_R, I_G, I_B, I_word, Q_R, Q_G, Q_B,
             I_start, Q_start)    
 
 
-def detect_start(signal, noise_samples=100, samples=100, threshold=5e-3):
+def detect_start(signal_detect, window_length=10, noise_samples=100, threshold=1):
     """
     Detects the start of the transmission
 
@@ -240,13 +238,16 @@ def detect_start(signal, noise_samples=100, samples=100, threshold=5e-3):
     :param threshold:       The minimum derivative to detect the start
     :return:                The position of the start of the tranmission
     """
-    # If the mean of 100 samples if over the threshold
-    for i in range(noise_samples, np.size(signal)):
-        if (signal[i]*signal[i+1] < 0 and all(j > 0 for j in signal[i+1:i+samples])
-                and float(np.diff(signal[i:i+2])) > threshold):
+    mean_energy = 0
+    for i in range(noise_samples):
+        mean_energy += window_energy(signal_detect, i, window_length)
+
+    mean_energy /= noise_samples
+    for j in range(noise_samples, len(signal_detect)):
+        if window_energy(signal_detect, j, window_length) > mean_energy + threshold:
             break
 
-    return i
+    return j + window_length - 1
 
 
 def detect_change(signal, start, skip=1000):
@@ -266,3 +267,14 @@ def detect_change(signal, start, skip=1000):
     return i
 
 
+def window_energy(signal_list, start, window_length):
+    """
+    Gets the energy of the signal
+
+    :param signal_list:         The signal from which to get the energy
+    :param start:               The initial position
+    :param window_length:       The length of the window
+    :return:
+    """
+    numpy_signal = np.asarray(signal_list[start:start+window_length])
+    return np.sum(numpy_signal*numpy_signal)

@@ -31,6 +31,8 @@ signal = generate_signal(word, image_path, f_word, f_R, f_G, f_B, fs, periods,
                     repetitions=3, sync_repetitions=3, estimation_repetitions=3,
                     inter_repetition_periods=1)
 
+# Generate noise
+noise = np.random.normal(0,1,100)
 signal = np.append(np.zeros(800), signal)
 scaled = np.int16(signal/np.max(np.abs(signal)) * 32767)
 display_fft(scaled, fs)
