@@ -32,7 +32,7 @@ def decode_signal(signal, f_word, f_R, f_G, f_B, fs, repetitions=3,
     """
     # Detect the start of the wave
     start = detect_start(signal)
-    signal = signal[:start]
+    signal = signal[start:]
 
     # Get image components from signal
     I_R, Q_R = qam16_demodulate(signal, f_R, fs)
@@ -133,6 +133,7 @@ def decode_signal(signal, f_word, f_R, f_G, f_B, fs, repetitions=3,
     # Print the word and generate the image
     print(word)
     plt.imshow(image)
+    plt.show()
 
 
 def estimate_signal(I, Q, I_start, Q_start, periods_I, periods_Q,
@@ -260,11 +261,13 @@ def detect_change(signal, start, skip=1000):
     :return:                The position of the first change in sign     
     """
     start += skip
+    i_temp = 0
     for i in range(int(start), np.size(signal)):
         if (signal[i]*signal[i+1]) < 0:
+            i_temp = i
             break
         
-    return i
+    return i_temp
 
 
 def window_energy(signal_list, start, window_length):

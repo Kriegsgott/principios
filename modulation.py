@@ -66,7 +66,7 @@ def qam16_demodulate(waves, f, fs):
     
     # Componentes I y Q
     I_component = 2*waves*cosine_wave
-    Q_component = -2*waves*sine_wave
+    Q_component = 2*waves*sine_wave
 
     # Parametros del Butterworth
     fc = 700
