@@ -79,6 +79,11 @@ def decode_signal(signal, f_word, f_R, f_G, f_B, fs, repetitions=3,
                                periods_I, periods_Q,
                                estimation_repetitions)
 
+    plt.plot(I_R, 'r')
+    plt.plot(I_B, 'b')
+    plt.plot(I_G, 'g')
+    plt.plot(I_word, '--')
+    plt.show()
     # Get the real values
     I_R_Real = get_values(I_R, periods_I)
     Q_R_Real = get_values(Q_R, periods_Q)
