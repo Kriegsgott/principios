@@ -117,18 +117,14 @@ def approximate(value):
     :param value:   The value to approximate
     :return:        The approximated value
     """
+
+    # If positive it is either 1 or 3
+    if value > 0:
+        return_value = 1 if abs(value - 1) < abs(value - 3) else 3
     
-    # If less than 1 it's actually 0
-    if abs(value) < 1:
-        return_value = 0
-        
-    # If positive it is either 2 or 4
-    elif value > 0:
-        return_value = 2 if abs(value - 2) < abs(value - 4) else 4
-    
-    # If negative it is either -2 or -4
+    # If negative it is either -1 or -3
     else:
-        return_value = -2 if abs(value + 2) < abs(value + 4) else -4
+        return_value = -1 if abs(value + 1) < abs(value + 3) else -3
         
     return return_value
 
@@ -142,7 +138,7 @@ def coding_values(component):
     """
     # Adjust the I and Q components (we don't want zero and want 2s and 4s)
     component = component + 1 if (component >= 0) else component
-    component *= 2
+    component = component*3/2 if (abs(component) == 2) else component
     
     return component
 
@@ -155,8 +151,8 @@ def reverse(component):
     :return:            The component with the reverse operation done
     """
     
-    component /= 2
-    component = component - 1 if (component > 0) else component
+    component = component*2/3 if abs(component == 3) else component
+    component = component - 1 if component > 0 else component
     component += 2
     
     return component
@@ -213,11 +209,7 @@ def decode_components(I, Q):
     values = []
     
     # Loop over the I and Q components
-    for i in range(len(I)):
-        # If either component is 0 we have a invalid value
-        if I[i] == 0 or Q[i] == 0:
-            continue
-        
+    for i in range(min(len(I), len(Q))):
         # Else get the original value
         I_component = reverse(I[i])
         Q_component = reverse(Q[i])

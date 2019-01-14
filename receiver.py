@@ -58,10 +58,6 @@ def decode_signal(signal, f_word, f_R, f_G, f_B, fs, repetitions=3,
     I_start = int(I_start)
     Q_start = int(Q_start)
 
-    plt.clf()
-    plt.plot(I_R[500000:580000], Q_R[500000:580000], '.')
-    plt.show()
-
     # Estimate the values of the signal
     I_word, Q_word = estimate_signal(I_word, Q_word, I_start, Q_start,
                                       periods_I, periods_Q,
