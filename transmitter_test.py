@@ -33,12 +33,10 @@ signal = generate_signal(word, image_path, f_word, f_R, f_G, f_B, fs, periods,
 
 signal = np.append(np.zeros(800), signal)
 
-# Noise
-noise = np.random.normal(0, 1.0, np.size(signal))
-signal += noise
-scaled = np.int16(signal/np.max(np.abs(signal)) * 32767)
-display_fft(signal, fs)
-wav.write('test.wav', 44100, scaled)
 
-word = decode_signal(signal, f_word, f_R, f_G, f_B, fs)
+scaled = np.float32((signal/np.max(np.abs(signal))))
+wav.write('test.wav', 44100, scaled)
+fs1, test = wav.read(r'C:\Users\dudam\PycharmProjects\principios\grabacion2.wav')
+
+word = decode_signal(test, f_word, f_R, f_G, f_B, fs)
 

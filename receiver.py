@@ -63,7 +63,7 @@ def decode_signal(signal, f_word, f_R, f_G, f_B, fs, repetitions=3,
     plt.plot(I_B[12000:56000], 'b')
     plt.plot(I_G[12000:56000], 'g')
     plt.plot(I_word[12000:56000], '--')
-    plt.show()
+    # plt.show()
 
     # Cast the values to ints
     periods_I = 2000
